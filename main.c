@@ -2,15 +2,23 @@
 #include<string.h>
 #include<stdlib.h>
 
+#define MAX_NOME 30
+#define MAX_CODIGO 10
+#define MAX_SUPERFICIE 15
+#define MAX_AVIOES_ESPERA 10
+#define MAX_AVIOES_CADASTRADOS 30
+#define MAX_PISTAS 6
+#define MAX_TIPO 10
+
 /*EQUIPE: Elysa Francyne, Laysa Edwyges, Mirelly Fontes, Sophia Sacramento, Valéria Silva.*/
 
 //struct para avião
 typedef struct aviao{
     int idAviao;
-    char nome[30];
-    char modelo[15];
-    char fabricante[15];
-    char codigoVoo[10];
+    char nome[MAX_NOME];
+    char modelo[MAX_NOME];
+    char fabricante[MAX_NOME];
+    char codigoVoo[MAX_CODIGO];
     int maxPassageiros;
     float velocidadeMax;
 }Aviao;
@@ -18,19 +26,62 @@ typedef struct aviao{
 //struct para pista
 typedef struct pista{
     int idPista;
-    char nome[30];
+    char nome[MAX_NOME];
     float comprimento;
-    char superficie[15];
-    Aviao avioesEspera[10];
+    char superficie[MAX_SUPERFICIE];
+    Aviao avioesEspera[MAX_AVIOES_ESPERA];
 }Pista;
 
 //struct para aeroporto
 typedef struct aeroporto{
     int idAeroporto;
-    char nome[30];
-    char codigoIATA[3];
-    char tipo[10];
+    char nome[MAX_NOME];
+    char codigoIATA[MAX_CODIGO];
+    char tipo[MAX_TIPO];
     int capAnual;
-    Aviao avioesCadastrados[25];
-    Pista pistasDisponiveis[5];
+    int qtdAvioesCadastrados;
+    int qtdPistasDisponiveis;
 }Aeroporto;
+
+void cadastrarAeroporto(Aeroporto *a){
+    printf("Digite o ID do Aeroporto: ");
+    scanf("%d", &a->idAeroporto);
+    getchar();
+
+    printf("Digite o nome do Aeroporto: ");
+    fgets(a->nome, sizeof(a->nome), stdin);
+    a->nome[strcspn(a->nome, "\n")] = '\0';
+
+    printf("Digite o codigo IATA: ");
+    fgets(a->codigoIATA, sizeof(a->codigoIATA), stdin);
+    a->codigoIATA[strcspn(a->codigoIATA, "\n")] = '\0';
+
+    printf("Digite o tipo (publico ou privado): ");
+    fgets(a->tipo, sizeof(a->tipo), stdin);
+    a->tipo[strcspn(a->tipo, "\n")] = '\0';
+
+    printf("Digite a capacidade de passageiros anual: ");
+    scanf("%d", &a->capAnual);
+    getchar();
+
+    printf("Digite a quantidade de avioes cadastrados: ");
+    scanf("%d", &a->qtdAvioesCadastrados);
+    getchar();
+
+    printf("Digite a quantidade de pistas disponiveis: ");
+    scanf("%d", &a->qtdPistasDisponiveis);
+    getchar();
+}
+
+void visualizarAeroporto(Aeroporto *a){
+    printf("\n=====INFORMACOES DO AEROPORTO=====\n");
+    printf("ID: %d\n", a->idAeroporto);
+    printf("Nome: %s\n", a->nome);
+    printf("Codigo IATA: %s\n", a->codigoIATA);
+    printf("Tipo: %s\n", a->tipo);
+    printf("Capacidade de passageiros anual: %d\n", a->capAnual);
+    printf("Quantidade de avioes cadastrados: %d\n", a->qtdAvioesCadastrados);
+    printf("Quantidade de pistas disponiveis: %d\n", a->qtdPistasDisponiveis);
+    printf("====================================\n");
+}
+
