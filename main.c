@@ -39,7 +39,9 @@ typedef struct aeroporto{
     char codigoIATA[MAX_CODIGO];
     char tipo[MAX_TIPO];
     int capAnual;
+    Aviao avioesCadastrados[MAX_AVIOES_CADASTRADOS];
     int qtdAvioesCadastrados;
+    Pista pistasDisponiveis[MAX_PISTAS];
     int qtdPistasDisponiveis;
 }Aeroporto;
 
@@ -64,13 +66,6 @@ void cadastrarAeroporto(Aeroporto *a){
     scanf("%d", &a->capAnual);
     getchar();
 
-    printf("Digite a quantidade de avioes cadastrados: ");
-    scanf("%d", &a->qtdAvioesCadastrados);
-    getchar();
-
-    printf("Digite a quantidade de pistas disponiveis: ");
-    scanf("%d", &a->qtdPistasDisponiveis);
-    getchar();
 }
 
 void visualizarAeroporto(Aeroporto *a){
@@ -80,8 +75,23 @@ void visualizarAeroporto(Aeroporto *a){
     printf("Codigo IATA: %s\n", a->codigoIATA);
     printf("Tipo: %s\n", a->tipo);
     printf("Capacidade de passageiros anual: %d\n", a->capAnual);
-    printf("Quantidade de avioes cadastrados: %d\n", a->qtdAvioesCadastrados);
-    printf("Quantidade de pistas disponiveis: %d\n", a->qtdPistasDisponiveis);
+
+    if (a->qtdAvioesCadastrados == 0) {
+        printf("Nenhum aviao cadastrado.\n");
+    } else {
+        printf("Avioes cadastrados:\n");
+        for (int i = 0; i < a->qtdAvioesCadastrados; i++) {
+            printf("%d - %s\n", i + 1, a->avioesCadastrados[i].nome);
+        }
+    }
+    if (a->qtdPistasDisponiveis == 0) {
+        printf("Nenhuma pista disponivel.\n");
+    } else {
+        printf("Pistas disponiveis:\n");
+        for (int i = 0; i < a->qtdPistasDisponiveis; i++) {
+            printf("  %d - %s\n", i + 1, a->pistasDisponiveis[i].nome);
+        }
+    }
     printf("====================================\n");
 }
 
