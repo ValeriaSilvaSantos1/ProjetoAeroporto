@@ -45,6 +45,17 @@ typedef struct aeroporto{
     int qtdPistasDisponiveis;
 }Aeroporto;
 
+
+void cadastrarAeroporto(Aeroporto *a);
+void visualizarAeroporto(Aeroporto *a);
+
+void cadastrarAviao(Aeroporto *a);
+void listarAvioes(Aeroporto *a);
+void recuperarAviaoPorID(Aeroporto *a);
+void atualizarAviao(Aeroporto *a);
+void removerAviao(Aeroporto *a);
+
+
 void cadastrarAeroporto(Aeroporto *a){
     printf("Digite o ID do Aeroporto: ");
     scanf("%d", &a->idAeroporto);
@@ -93,5 +104,195 @@ void visualizarAeroporto(Aeroporto *a){
         }
     }
     printf("====================================\n");
+}
+
+
+void cadastrarAviao(Aeroporto *a){
+    if(a->qtdAvioesCadastrados >= MAX_AVIOES_CADASTRADOS){
+        printf("Limite de avioes cadastrados atingido.\n");
+        return;
+    }
+
+    Aviao *av = &a->avioesCadastrados[a->qtdAvioesCadastrados];
+
+    printf("Digite o ID do Aviao: ");
+    scanf("%d", &av->idAviao);
+    getchar();
+
+    printf("Digite o nome do Aviao: ");
+    fgets(av->nome, sizeof(av->nome), stdin);
+    av->nome[strcspn(av->nome, "\n")] = '\0';
+
+    printf("Digite o modelo do Aviao: ");
+    fgets(av->modelo, sizeof(av->modelo), stdin);
+    av->modelo[strcspn(av->modelo, "\n")] = '\0';
+
+    printf("Digite o fabricante do Aviao: ");
+    fgets(av->fabricante, sizeof(av->fabricante), stdin);
+    av->fabricante[strcspn(av->fabricante, "\n")] = '\0';
+
+    printf("Digite o codigo do voo: ");
+    fgets(av->codigoVoo, sizeof(av->codigoVoo), stdin);
+    av->codigoVoo[strcspn(av->codigoVoo, "\n")] = '\0';
+
+    printf("Digite a quantidade maxima de passageiros: ");
+    scanf("%d", &av->maxPassageiros);
+    getchar();
+
+    printf("Digite a velocidade maxima (km/h): ");
+    scanf("%f", &av->velocidadeMax);
+    getchar();
+
+    a->qtdAvioesCadastrados++;
+    printf("Aviao cadastrado com sucesso!\n");
+    a->qtdAvioesCadastrados = 0;
+    a->qtdPistasDisponiveis = 0;
+
+}
+
+void listarAvioes(Aeroporto *a){
+    if(a->qtdAvioesCadastrados == 0){
+        printf("Nenhum aviao cadastrado.\n");
+        return;
+    }
+
+    printf("\n=====LISTA DE AVIOES=====\n");
+    for(int i = 0; i < a->qtdAvioesCadastrados; i++){
+        Aviao *av = &a->avioesCadastrados[i];
+        printf("ID: %d\n", av->idAviao);
+        printf("Nome: %s\n", av->nome);
+        printf("Modelo: %s\n", av->modelo);
+        printf("Fabricante: %s\n", av->fabricante);
+        printf("Codigo do Voo: %s\n", av->codigoVoo);
+        printf("Maximo de Passageiros: %d\n", av->maxPassageiros);
+        printf("Velocidade Maxima: %.2f km/h\n", av->velocidadeMax);
+        printf("------------------------------\n");
+    }
+}
+
+void recuperarAviaoPorID(Aeroporto *a){
+    if(a->qtdAvioesCadastrados == 0){
+        printf("Nenhum aviao cadastrado.\n");
+        return;
+    }
+
+    int id;
+    printf("Digite o ID do Aviao que deseja buscar: ");
+    scanf("%d", &id);
+    getchar();
+
+    for(int i = 0; i < a->qtdAvioesCadastrados; i++){
+        if(a->avioesCadastrados[i].idAviao == id){
+            Aviao *av = &a->avioesCadastrados[i];
+            printf("\n=====AVIAO ENCONTRADO=====\n");
+            printf("ID: %d\n", av->idAviao);
+            printf("Nome: %s\n", av->nome);
+            printf("Modelo: %s\n", av->modelo);
+            printf("Fabricante: %s\n", av->fabricante);
+            printf("Codigo do Voo: %s\n", av->codigoVoo);
+            printf("Maximo de Passageiros: %d\n", av->maxPassageiros);
+            printf("Velocidade Maxima: %.2f km/h\n", av->velocidadeMax);
+            printf("===========================\n");
+            return;
+        }
+    }
+    printf("Aviao com ID %d nao encontrado.\n", id);
+}
+
+void atualizarAviao(Aeroporto *a){
+    if(a->qtdAvioesCadastrados == 0){
+        printf("Nenhum aviao cadastrado.\n");
+        return;
+    }
+
+    int id;
+    printf("Digite o ID do Aviao que deseja atualizar: ");
+    scanf("%d", &id);
+    getchar();
+
+    for(int i = 0; i < a->qtdAvioesCadastrados; i++){
+        if(a->avioesCadastrados[i].idAviao == id){
+            Aviao *av = &a->avioesCadastrados[i];
+
+            printf("Digite o novo nome do Aviao: ");
+            fgets(av->nome, sizeof(av->nome), stdin);
+            av->nome[strcspn(av->nome, "\n")] = '\0';
+
+            printf("Digite o novo modelo do Aviao: ");
+            fgets(av->modelo, sizeof(av->modelo), stdin);
+            av->modelo[strcspn(av->modelo, "\n")] = '\0';
+
+            printf("Digite o novo fabricante do Aviao: ");
+            fgets(av->fabricante, sizeof(av->fabricante), stdin);
+            av->fabricante[strcspn(av->fabricante, "\n")] = '\0';
+
+            printf("Digite o novo codigo do voo: ");
+            fgets(av->codigoVoo, sizeof(av->codigoVoo), stdin);
+            av->codigoVoo[strcspn(av->codigoVoo, "\n")] = '\0';
+
+            printf("Digite a nova quantidade maxima de passageiros: ");
+            scanf("%d", &av->maxPassageiros);
+            getchar();
+
+            printf("Digite a nova velocidade maxima (km/h): ");
+            scanf("%f", &av->velocidadeMax);
+            getchar();
+
+            printf("Aviao atualizado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Aviao com ID %d nao encontrado.\n", id);
+}
+
+void removerAviao(Aeroporto *a){
+    if(a->qtdAvioesCadastrados == 0){
+        printf("Nenhum aviao cadastrado.\n");
+        return;
+    }
+
+    int id;
+    printf("Digite o ID do Aviao que deseja remover: ");
+    scanf("%d", &id);
+    getchar();
+
+    for(int i = 0; i < a->qtdAvioesCadastrados; i++){
+        if(a->avioesCadastrados[i].idAviao == id){
+            for(int j = i; j < a->qtdAvioesCadastrados - 1; j++){
+                a->avioesCadastrados[j] = a->avioesCadastrados[j + 1];
+            }
+            a->qtdAvioesCadastrados--;
+            printf("Aviao removido com sucesso!\n");
+            return;
+        }
+    }
+    printf("Aviao com ID %d nao encontrado.\n", id);
+}
+
+void menuAvioes(Aeroporto *a){
+    int opcao;
+    do{
+        printf("\n=====MENU AVIOES=====\n");
+        printf("1. Cadastrar Aviao\n");
+        printf("2. Listar Todos os Avioes\n");
+        printf("3. Recuperar Aviao por ID\n");
+        printf("4. Atualizar Aviao\n");
+        printf("5. Remover Aviao\n");
+        printf("0. Voltar\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch(opcao){
+            case 1: cadastrarAviao(a); break;
+            case 2: listarAvioes(a); break;
+            case 3: recuperarAviaoPorID(a); break;
+            case 4: atualizarAviao(a); break;
+            case 5: removerAviao(a); break;
+            case 0: printf("Voltando...\n"); break;
+            default: printf("Opcao invalida.\n");
+        }
+
+    }while(opcao != 0);
 }
 
